@@ -21,7 +21,7 @@ function App() {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (isEmpty == true) {
+    if (isEmpty) {
       return;
     }
   
@@ -39,7 +39,7 @@ function App() {
 
     //Prev makes so that the previous messages dont disappear while adding a new one
     setMessages((prev) => [...prev, userMessage, aiReply]);
-    //setText(""); // Clears the input field after sending the message
+    // Clears the input field after sending the message
     setText("");
   };
 
@@ -52,14 +52,10 @@ function App() {
         <img src={orbit} alt="Orbit" className="w-32 h-32" />
       </div>
 
-      {/* Área das mensagens */}
+      {/* Messages layout */}
       <div className="flex-1 overflow-y-auto px-6 mt-6 flex flex-col gap-3 max-w-2xl w-full mx-auto">
-        {messages.length === 0 && (
-          <p className="text-gray-500 text-center mt-10">
-            Ainda não há mensagens. Escreve algo abaixo.
-          </p>
-        )}
 
+        {/* Loop through every message and render one chat bubble for each*/}
         {messages.map((msg) => (
           <div
             key={msg.id}
@@ -85,19 +81,19 @@ function App() {
             type="text"
             value={text}
             onChange={(e) => setText(e.target.value)}
-            placeholder="Escreve a tua mensagem"
+            placeholder="Type your message..."
           />
 
           <button
             type="submit"
             disabled={isEmpty}
-            title={isEmpty ? "Escreve algo antes de enviar" : undefined}
+            title={isEmpty ? "Type something before sending" : undefined}
             className={`rounded px-4 py-2 text-sm font-medium transition-colors ${isEmpty
                 ? "bg-gray-600 text-gray-300 cursor-not-allowed"
                 : "text-white bg-gradient-to-br from-pink-500 to-orange-400 cursor-pointer"
               }`}
           >
-            Enviar
+            Send
           </button>
         </div>
       </form>
