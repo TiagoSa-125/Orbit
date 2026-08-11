@@ -12,19 +12,44 @@ type ChatMessage = {
 
 let nextId = 0;
 
+
+const applications = [
+  {
+    name: "Spotify",
+    keywords: ["spotify", "music", "song"],
+  
+  },
+  {
+    name: "Discord",
+    keywords: ["discord", "chat", "server", "call"],
+  },
+];
+
+const getReplyText = (message: string) => {
+
+  for (const app of applications) {
+    for (let i = 0; i < app.keywords.length; i++) {
+    if (message.toLowerCase().includes(app.keywords[i])) {
+      return "Opening " + app.name + "...";
+      //We can also use this : return `Opening ${app.name}...`;
+    }
+  }
+}
+
+  return "Message sent!";
+  }
+;
+
 function App() {
   const [text, setText] = useState<string>("");
   const [messages, setMessages] = useState<ChatMessage[]>([]);
 
-  //This removes spaces from the beginning and end
   const isEmpty = text.trim().length === 0;
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (isEmpty) {
-      return;
-    }
-  
+    if (isEmpty) return;
+
     const userMessage: ChatMessage = {
       id: nextId++,
       text,
@@ -33,13 +58,11 @@ function App() {
 
     const aiReply: ChatMessage = {
       id: nextId++,
-      text: "Message sent!",
+      text: getReplyText(text),
       sender: "ai",
     };
 
-    //Prev makes so that the previous messages dont disappear while adding a new one
     setMessages((prev) => [...prev, userMessage, aiReply]);
-    // Clears the input field after sending the message
     setText("");
   };
 
@@ -52,20 +75,25 @@ function App() {
         <img src={orbit} alt="Orbit" className="w-32 h-32" />
       </div>
 
-      {/* Messages layout */}
+      {/* Área das mensagens */}
       <div className="flex-1 overflow-y-auto px-6 mt-6 flex flex-col gap-3 max-w-2xl w-full mx-auto">
+        {messages.length === 0 && (
+          <p className="text-gray-500 text-center mt-10">
+            Ainda não há mensagens. Escreve algo abaixo.
+          </p>
+        )}
 
-        {/* Loop through every message and render one chat bubble for each*/}
         {messages.map((msg) => (
           <div
             key={msg.id}
             className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"}`}
           >
             <p
-              className={`rounded-2xl px-4 py-2 text-sm max-w-xs break-words ${msg.sender === "user"
+              className={`rounded-2xl px-4 py-2 text-sm max-w-xs break-words ${
+                msg.sender === "user"
                   ? "text-white bg-gradient-to-br from-pink-500 to-orange-400 rounded-br-sm"
                   : "text-white bg-gray-800 rounded-bl-sm"
-                }`}
+              }`}
             >
               {msg.text}
             </p>
@@ -81,19 +109,20 @@ function App() {
             type="text"
             value={text}
             onChange={(e) => setText(e.target.value)}
-            placeholder="Type your message..."
+            placeholder="Escreve a tua mensagem"
           />
 
           <button
             type="submit"
             disabled={isEmpty}
-            title={isEmpty ? "Type something before sending" : undefined}
-            className={`rounded px-4 py-2 text-sm font-medium transition-colors ${isEmpty
+            title={isEmpty ? "Escreve algo antes de enviar" : undefined}
+            className={`rounded px-4 py-2 text-sm font-medium transition-colors ${
+              isEmpty
                 ? "bg-gray-600 text-gray-300 cursor-not-allowed"
                 : "text-white bg-gradient-to-br from-pink-500 to-orange-400 cursor-pointer"
-              }`}
+            }`}
           >
-            Send
+            Enviar
           </button>
         </div>
       </form>
