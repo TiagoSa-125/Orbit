@@ -79,7 +79,7 @@ function App() {
       <div className="flex-1 overflow-y-auto px-6 mt-6 flex flex-col gap-3 max-w-2xl w-full mx-auto">
         {messages.length === 0 && (
           <p className="text-gray-500 text-center mt-10">
-            Ainda não há mensagens. Escreve algo abaixo.
+            Still no messages. Write something below.
           </p>
         )}
 
@@ -109,20 +109,20 @@ function App() {
             type="text"
             value={text}
             onChange={(e) => setText(e.target.value)}
-            placeholder="Escreve a tua mensagem"
+            placeholder="Write a message..."
           />
 
           <button
             type="submit"
             disabled={isEmpty}
-            title={isEmpty ? "Escreve algo antes de enviar" : undefined}
+            title={isEmpty ? "Write something before sending" : undefined}
             className={`rounded px-4 py-2 text-sm font-medium transition-colors ${
               isEmpty
                 ? "bg-gray-600 text-gray-300 cursor-not-allowed"
                 : "text-white bg-gradient-to-br from-pink-500 to-orange-400 cursor-pointer"
             }`}
           >
-            Enviar
+            Send
           </button>
         </div>
       </form>
