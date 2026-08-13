@@ -13,14 +13,18 @@ type ChatMessage = {
 let nextId = 0;
 
 
+
+
 const applications = [
   {
     name: "Spotify",
+    state: "closed",
     keywords: ["spotify", "music", "song"],
-  
+
   },
   {
     name: "Discord",
+    state: "closed",
     keywords: ["discord", "chat", "server", "call"],
   },
 ];
@@ -29,15 +33,31 @@ const getReplyText = (message: string) => {
 
   for (const app of applications) {
     for (let i = 0; i < app.keywords.length; i++) {
-    if (message.toLowerCase().includes(app.keywords[i])) {
-      return "Opening " + app.name + "...";
-      //We can also use this : return `Opening ${app.name}...`;
+      if (message.toLowerCase().includes(app.keywords[i]) && message.toLowerCase().includes("open") || message.toLowerCase().includes(app.keywords[i]) && (message.toLowerCase().includes("close"))) {
+
+        if ((message.toLowerCase().includes("open"))) {
+          if (app.state === "open") {
+            return app.name + " is already open. I'll bring it to the front.";
+          }
+          app.state = "open";
+          return "Opening " + app.name + "...";
+          //We can also use this : return `Opening ${app.name}...`;
+        }
+        if ((message.toLowerCase().includes("close"))) {
+          if (app.state === "closed") {
+            return app.name + " is already closed.";
+          }
+          app.state = "closed";
+          return "Closing " + app.name + "...";
+          //We can also use this : return `Closing ${app.name}...`;
+        }
+
     }
   }
 }
 
-  return "Message sent!";
-  }
+return "Message sent!";
+}
 ;
 
 function App() {
@@ -89,11 +109,10 @@ function App() {
             className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"}`}
           >
             <p
-              className={`rounded-2xl px-4 py-2 text-sm max-w-xs break-words ${
-                msg.sender === "user"
-                  ? "text-white bg-gradient-to-br from-pink-500 to-orange-400 rounded-br-sm"
-                  : "text-white bg-gray-800 rounded-bl-sm"
-              }`}
+              className={`rounded-2xl px-4 py-2 text-sm max-w-xs break-words ${msg.sender === "user"
+                ? "text-white bg-gradient-to-br from-pink-500 to-orange-400 rounded-br-sm"
+                : "text-white bg-gray-800 rounded-bl-sm"
+                }`}
             >
               {msg.text}
             </p>
@@ -116,11 +135,10 @@ function App() {
             type="submit"
             disabled={isEmpty}
             title={isEmpty ? "Write something before sending" : undefined}
-            className={`rounded px-4 py-2 text-sm font-medium transition-colors ${
-              isEmpty
-                ? "bg-gray-600 text-gray-300 cursor-not-allowed"
-                : "text-white bg-gradient-to-br from-pink-500 to-orange-400 cursor-pointer"
-            }`}
+            className={`rounded px-4 py-2 text-sm font-medium transition-colors ${isEmpty
+              ? "bg-gray-600 text-gray-300 cursor-not-allowed"
+              : "text-white bg-gradient-to-br from-pink-500 to-orange-400 cursor-pointer"
+              }`}
           >
             Send
           </button>
