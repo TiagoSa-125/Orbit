@@ -7,13 +7,10 @@ import orbit from "./assets/orbit_logo_var_neon_noBack.png";
 type ChatMessage = {
   id: number;
   text: string;
-  sender: "user" | "ai";
+  sender: "user" | "orbit";
 };
 
 let nextId = 0;
-
-
-
 
 const applications = [
   {
@@ -28,6 +25,7 @@ const applications = [
     keywords: ["discord", "chat", "server", "call"],
   },
 ];
+
 
 const getReplyText = (message: string) => {
 
@@ -79,7 +77,7 @@ function App() {
     const aiReply: ChatMessage = {
       id: nextId++,
       text: getReplyText(text),
-      sender: "ai",
+      sender: "orbit",
     };
 
     setMessages((prev) => [...prev, userMessage, aiReply]);
