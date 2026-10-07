@@ -49,7 +49,6 @@ const getReplyText = (message: string) => {
           return "Closing " + app.name + "...";
           //We can also use this : return `Closing ${app.name}...`;
         }
-
     }
   }
 }
